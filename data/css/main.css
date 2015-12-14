@@ -26,3 +26,17 @@
     top: 0;
     left: 0;
 }
+
+.btn {
+    width: 120px;
+    height: 32px;
+    background: #000000;
+    text-align: center;
+    line-height: 32px;
+}
+
+.btn > a {
+    text-decoration: none;
+    color: #ffffff;
+    display: block;
+}

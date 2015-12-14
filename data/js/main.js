@@ -6,6 +6,9 @@
 function rollingBanner(selector, playSpeed, rollingSpeed, direction) {
     this._$banners - null;
     this._direction = direction;
+    if(direction == null) {
+        this._direction = "left";
+    }
     this._currentIndex = 0;
     this._timerID = -1;
     this._bannerWidth = 0;
@@ -46,11 +49,13 @@ rollingBanner.prototype._initBannerPos = function() {
 
 }
 
+
 rollingBanner.prototype.startAutoPlay = function() {
     var objThis = this;
     if(this._timerID = -1) {
         this._timerID = setInterval(function() {
             objThis.nextBanner();
+            //objThis.prevBanner();
         }, this._playSpeed);
     }
 }
@@ -62,6 +67,50 @@ rollingBanner.prototype.nextBanner = function() {
 
     if(this._currentIndex >= this._$banners.length) {
         this._initIndex();
+    }
+
+    var $inBanner = this._$banners.eq(this._currentIndex);
+
+    if(this._direction == "left") {
+        $inBanner.css({
+            left: this._bannerWidth,
+            opacity: 0
+        })
+
+        $outBanner.stop().animate({
+            left: -this._bannerWidth,
+            opacity: 0
+        }, this._rollingSpeed);
+
+        $inBanner.stop().animate({
+            left: 0,
+            opacity: 1
+        }, this._rollingSpeed);
+    } else if (this._direction == "top") {
+        $inBanner.css({
+            top: this._bannerHeight,
+            opacity: 0
+        })
+
+        $outBanner.stop().animate({
+            top: -this._bannerHeight,
+            opacity: 0
+        }, this._rollingSpeed);
+
+        $inBanner.stop().animate({
+            top: 0,
+            opacity: 1
+        }, this._rollingSpeed);
+    }
+}
+
+rollingBanner.prototype.prevBanner = function() {
+    var $outBanner = this._$banners.eq(this._currentIndex);
+
+    this._currentIndex--;
+
+    if(this._currentIndex < 0) {
+        this._currentIndex = this._$banners.length - 1;
     }
 
     var $inBanner = this._$banners.eq(this._currentIndex);
@@ -142,7 +191,9 @@ childRoolingBanner.prototype.stopAutoPlay = function() {
 */
 
 $(document).ready(function() {
-    var rolling1 = new rollingBanner("#banner", 3000, 1000, "left")
+    var rolling1 = new rollingBanner("#banner1", 1000, 1000, "left");
+    var rolling2 = new rollingBanner("#banner2", 1000, 1000, "left");
 })
+
 
 
